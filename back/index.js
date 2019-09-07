@@ -1,4 +1,4 @@
-import { Serial } from 'serial_communication.js'
+const Serial = require('./serial_communication')
 const express = require('express')
 const app = express()
 const port = 3000

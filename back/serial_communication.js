@@ -1,7 +1,7 @@
 const SerialPort = require('serialport')
 const EventEmitter = require('events')
 
-export class Serial {
+module.exports = class Serial {
   constructor (path, baudRate, readCallback) {
     this.queue = []
     this.emitter = new EventEmitter()
