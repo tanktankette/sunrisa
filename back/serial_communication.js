@@ -6,7 +6,7 @@ module.exports = class Serial {
     this.queue = []
     this.emitter = new EventEmitter()
     this.serialPort = new SerialPort(path, { baudRate: baudRate })
-
+    this.write = this.write.bind(this)
     this.emitter.on('ready', this.write)
     this.serialPort.on('data', readCallback)
   }
@@ -21,7 +21,7 @@ module.exports = class Serial {
 
   write () {
     if (this.queue.length === 0) return
-    const [data, callback] = this.queue.shift
+    const [data, callback] = this.queue.shift()
     this.serialPort.write(data)
     this.serialPort.drain(callback)
     this.emitter.emit('ready')
