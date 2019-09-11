@@ -8,7 +8,7 @@ module.exports = class Serial {
     this.serialPort = new SerialPort(path, { baudRate: baudRate })
     this.write = this.write.bind(this)
     this.emitter.on('ready', this.write)
-    this.serialPort.on('data', readCallback)
+    this.serialPort.on('data', this.read(readCallback))
   }
 
   addToQueue (data, callback) {
@@ -25,5 +25,9 @@ module.exports = class Serial {
     this.serialPort.write(data)
     this.serialPort.drain(callback)
     this.emitter.emit('ready')
+  }
+
+  read (callback) {
+    callback(this.serialPort.read())
   }
 }
