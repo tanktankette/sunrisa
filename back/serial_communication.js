@@ -3,12 +3,13 @@ const EventEmitter = require('events')
 
 module.exports = class Serial {
   constructor (path, baudRate, readCallback) {
+    this.readCallback = readCallback
     this.queue = []
     this.emitter = new EventEmitter()
     this.serialPort = new SerialPort(path, { baudRate: baudRate })
     this.write = this.write.bind(this)
     this.emitter.on('ready', this.write)
-    this.serialPort.on('data', this.read(readCallback))
+    this.serialPort.on('data', this.read)
   }
 
   addToQueue (data, callback) {
@@ -28,6 +29,6 @@ module.exports = class Serial {
   }
 
   read (callback) {
-    callback(this.serialPort.read())
+    this.readCallback(this.serialPort.read())
   }
 }
